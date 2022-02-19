@@ -38,13 +38,13 @@ public class Communication {
 			data.loadData();
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
-		}
+		}	
 		scanner.close();
 		int n = nMessages;
-		Buffer bufferA = new Buffer("A", 8);
-		Buffer bufferB = new Buffer("B", 8);
-		Buffer bufferC = new Buffer("C", 8);
-		Buffer bufferD = new Buffer("D", 8);
+		Buffer bufferA = new Buffer("A", data.getAmessages());
+		Buffer bufferB = new Buffer("B", data.getBmessages());
+		Buffer bufferC = new Buffer("C", data.getCmessages());
+		Buffer bufferD = new Buffer("D", data.getDmessages());
 		int capacidades = bufferA.getCapacidad()+bufferB.getCapacidad()+bufferC.getCapacidad()+bufferD.getCapacidad();
 		if (nMessages > capacidades)
 		{
