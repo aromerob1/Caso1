@@ -64,6 +64,7 @@ public class Process extends Thread {
 			}
 			lBuffer.cleanBuffer();
 			send(new Message(true));
+			Communication.executionEnded();
 		}
 		else
 		{
@@ -80,9 +81,10 @@ public class Process extends Thread {
 					transform(m);
 					send(m);
 				}
+				Communication.executionEnded();
+
 			}
-		}
-		Communication.executionEnded();
+		}		
 	}
 	
 	public Message get()
