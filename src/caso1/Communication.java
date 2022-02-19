@@ -32,6 +32,7 @@ public class Communication {
 		Runnable ended = () -> System.out.println("Todos los procesos han terminado su ejecucion");
 		barrier = new CyclicBarrier(4, ended);
 		Scanner scanner = new Scanner(System.in);
+		System.out.println("Ingrese el numero de mensajes a enviar: ");
 		nMessages = Integer.parseInt(scanner.nextLine());
 		Config data = new Config();
 		try {
