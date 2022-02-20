@@ -10,105 +10,88 @@ public class Process extends Thread {
 	private Buffer rBuffer;
 	private Buffer lBuffer;
 	private boolean execute;
-	
-	public Process(int id, int waitTime, Buffer lbuffer, Buffer rBuffer)
-	{
+	private boolean tipoEnvio;
+	private boolean tipoRecep;
+
+	public Process(int id, int waitTime, Buffer lbuffer, Buffer rBuffer, boolean tipoEnvio, boolean tipoRecep) {
 		this.id = id;
 		this.waitTime = waitTime;
 		this.lBuffer = lbuffer;
 		this.rBuffer = rBuffer;
+		this.tipoEnvio = tipoEnvio;
+		this.tipoRecep = tipoRecep;
 	}
-	
-	public Process(int id, int waitTime, int nMessages, Buffer lbuffer, Buffer rBuffer) throws Exception
-	{
-		if (id == 1)
-		{
+
+	public Process(int id, int waitTime, int nMessages, Buffer lbuffer, Buffer rBuffer, boolean tipoEnvio,
+			boolean tipoRecep) throws Exception {
+		if (id == 1) {
 			this.id = id;
 			this.waitTime = waitTime;
 			this.nMessages = nMessages;
 			this.lBuffer = lbuffer;
 			this.rBuffer = rBuffer;
-		}
-		else
-		{
+			this.tipoEnvio = tipoEnvio;
+			this.tipoRecep = tipoRecep;
+		} else {
 			Exception e = new Exception("Solo el proceso 1 puede conocer el numero de mensajes");
 			throw e;
 		}
 	}
-	
-	public void run()
-	{
+
+	public void run() {
 		execute = true;
-		if (id == 1)
-		{
+		if (id == 1) {
 			int n = nMessages;
 			boolean existingMessage = true;
-			while(existingMessage)
-			{
+			while (existingMessage) {
 				Message m = get();
-				if(m.toString().equals("Mensaje:"))
-				{
+				if (m.toString().equals("Mensaje:")) {
 					transform(m);
 					send(m);
-				}
-				else
-				{
-					while(n > 0)
-					{
+				} else {
+					while (n > 0) {
 						System.out.println(m.toString());
 						n--;
 					}
 					existingMessage = false;
 				}
-				
+
 			}
 			lBuffer.cleanBuffer();
 			send(new Message(true));
 			Communication.executionEnded();
-		}
-		else
-		{
-			while(execute)
-			{
+		} else {
+			while (execute) {
 				Message m = get();
-				if(m.toString().equals("Mensaje:FIN"))
-				{
+				if (m.toString().equals("Mensaje:FIN")) {
 					send(m);
-					execute = false;	
-				}
-				else
-				{
+					execute = false;
+				} else {
 					transform(m);
 					send(m);
 				}
 				Communication.executionEnded();
 
 			}
-		}		
+		}
 	}
-	
-	public Message get()
-	{
+
+	public Message get() {
 		Message m = lBuffer.remove();
 		return m;
 	}
-	
-	public void transform(Message m)
-	{
+
+	public void transform(Message m) {
 		m.stamp(Integer.toString(id));
 	}
-	
-	public void send(Message m)
-	{
-		try 
-		{
+
+	public void send(Message m) {
+		try {
 			sleep(waitTime);
 			rBuffer.add(m);
-		} 
-		catch (InterruptedException e) 
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }
