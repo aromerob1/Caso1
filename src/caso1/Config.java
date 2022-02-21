@@ -21,7 +21,7 @@ public class Config {
         this.Bmessages = 0;
         this.Cmessages = 0;
         this.Dmessages = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             this.p1[i] = "0";
             this.p2[i] = "0";
             this.p3[i] = "0";
@@ -87,15 +87,100 @@ public class Config {
         return p1;
     }
 
+    public Boolean getP1TipoEnvio() {
+        if (p1[2].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    public Boolean getP1TipoRecep() {
+        if (p1[3].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
     public String[] getP2() {
         return p2;
+    }
+
+    public Boolean getP2TipoEnvio() {
+        if (p2[2].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    public Boolean getP2TipoRecep() {
+        if (p2[3].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
     }
 
     public String[] getP3() {
         return p3;
     }
 
+    public Boolean getP3TipoEnvio() {
+        if (p3[2].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    public Boolean getP3TipoRecep() {
+        if (p3[3].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
     public String[] getP4() {
         return p4;
     }
+
+    public Boolean getP4TipoEnvio() {
+        if (p4[2].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    public Boolean getP4TipoRecep() {
+        if (p4[3].equals("true")) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
+
+    public Integer getP1Tiempo() {
+        int x = Integer.valueOf(p1[1]);
+        return x;
+    }
+
+    public Integer getP2Tiempo() {
+        int x = Integer.valueOf(p2[1]);
+        return x;
+    }
+
+    public Integer getP3Tiempo() {
+        int x = Integer.valueOf(p3[1]);
+        return x;
+    }
+
+    public Integer getP4Tiempo() {
+        int x = Integer.valueOf(p4[1]);
+        return x;
+    }
+
 }
