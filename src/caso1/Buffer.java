@@ -14,19 +14,27 @@ public class Buffer {
 		buff = new ArrayList<Message>();
 	}
 
-	public synchronized void add(Message m) {
-		while (buff.size() == capacidad) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+	public synchronized void add(Message m, Boolean esActivo) {
+		if (esActivo) {
+			while (buff.size() == capacidad) {
+				// Probable yield: Preguntar
+			}
+		} else {
+			while (buff.size() == capacidad) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		buff.add(m);
 		notify();
 	}
 
-	public synchronized Message remove() {
+	// sos
+	public synchronized Message remove(Boolean esActivo) {
+
 		while (buff.size() == 0) {
 			try {
 				wait();
@@ -51,6 +59,10 @@ public class Buffer {
 
 	public int getCapacidad() {
 		return this.capacidad;
+	}
+
+	public int getBuffSize() {
+		return this.buff.size();
 	}
 
 }

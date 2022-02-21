@@ -43,19 +43,20 @@ public class Communication {
 			System.out.println("El numero de mensajes a enviar excede la suma de los tama�os de los buffers");
 		} else {
 			try {
-				Process process1 = new Process(1, 1, nMessages, bufferD, bufferA, data.getP1TipoEnvio(), data.getP1TipoRecep());
-				Process process2 = new Process(2, 1, bufferA, bufferB, data.getP2TipoEnvio(), data.getP2TipoRecep());
-				Process process3 = new Process(3, 1, bufferB, bufferC, data.getP3TipoEnvio(), data.getP3TipoRecep());
-				Process process4 = new Process(4, 1, bufferC, bufferD, data.getP4TipoEnvio(), data.getP4TipoRecep());
+				Process process1 = new Process(1, data.getP1Tiempo(), nMessages, bufferD, bufferA, data.getP1TipoEnvio(), data.getP1TipoRecep());
+				Process process2 = new Process(2, data.getP2Tiempo(), bufferA, bufferB, data.getP2TipoEnvio(), data.getP2TipoRecep());
+				Process process3 = new Process(3, data.getP3Tiempo(), bufferB, bufferC, data.getP3TipoEnvio(), data.getP3TipoRecep());
+				Process process4 = new Process(4, data.getP4Tiempo(), bufferC, bufferD, data.getP4TipoEnvio(), data.getP4TipoRecep());
 				process1.start();
 				process2.start();
 				process3.start();
 				process4.start();
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			while (n > 0) {
-				bufferD.add(new Message());
+				bufferD.add(new Message(), data.getP1TipoRecep());
 				n--;
 			}
 		}

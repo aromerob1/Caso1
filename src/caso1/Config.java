@@ -163,4 +163,24 @@ public class Config {
         }
     }
 
+    public Integer getP1Tiempo() {
+        int x = Integer.valueOf(p1[1]);
+        return x;
+    }
+
+    public Integer getP2Tiempo() {
+        int x = Integer.valueOf(p2[1]);
+        return x;
+    }
+
+    public Integer getP3Tiempo() {
+        int x = Integer.valueOf(p3[1]);
+        return x;
+    }
+
+    public Integer getP4Tiempo() {
+        int x = Integer.valueOf(p4[1]);
+        return x;
+    }
+
 }
