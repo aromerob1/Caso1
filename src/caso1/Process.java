@@ -39,27 +39,23 @@ public class Process extends Thread {
 	}
 
 	public void run() {
-		execute = true;
 		if (id == 1) {
 			int n = nMessages;
-			boolean existingMessage = true;
-			while (existingMessage) {
+			while (n>0) {
 				Message m = get(this.tipoRecep);
 				if (m.toString().equals("Mensaje:")) {
 					transform(m);
 					send(m, this.tipoEnvio);
-				} else {
-					while (n > 0) {
-						System.out.println(m.toString());
-						n--;
-					}
-					existingMessage = false;
+				} 
+				else{
+					System.out.println(m.toString());
+					n--;
 				}
 			}
 			lBuffer.cleanBuffer();
 			send(new Message(true), this.tipoEnvio);
-			Communication.executionEnded();
 		} else {
+			execute = true;
 			while (execute) {
 				Message m = get(this.tipoRecep);
 				if (m.toString().equals("Mensaje:FIN")) {
@@ -69,9 +65,9 @@ public class Process extends Thread {
 					transform(m);
 					send(m, this.tipoEnvio);
 				}
-				Communication.executionEnded();
 			}
 		}
+		Communication.executionEnded();
 	}
 
 	public Message get(Boolean tipoRecep) {

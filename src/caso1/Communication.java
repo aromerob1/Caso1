@@ -56,7 +56,7 @@ public class Communication {
 				e.printStackTrace();
 			}
 			while (n > 0) {
-				bufferD.add(new Message(), data.getP1TipoRecep());
+				bufferD.add(new Message(), data.getP4TipoEnvio());
 				n--;
 			}
 		}
