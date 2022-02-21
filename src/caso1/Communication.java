@@ -1,5 +1,7 @@
 package caso1;
 
+
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -31,17 +33,23 @@ public class Communication {
 		barrier = new CyclicBarrier(4, ended);
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Ingrese el numero de mensajes a enviar: ");
-		nMessages = Integer.parseInt(scanner.nextLine()); 
+		nMessages = Integer.parseInt(scanner.nextLine());
+		Config data = new Config();
+		try {
+			data.loadData();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}	
 		scanner.close();
 		int n = nMessages;
-		Buffer bufferA = new Buffer("A", 8);
-		Buffer bufferB = new Buffer("B", 8);
-		Buffer bufferC = new Buffer("C", 8);
-		Buffer bufferD = new Buffer("D", 8);
+		Buffer bufferA = new Buffer("A", data.getAmessages());
+		Buffer bufferB = new Buffer("B", data.getBmessages());
+		Buffer bufferC = new Buffer("C", data.getCmessages());
+		Buffer bufferD = new Buffer("D", data.getDmessages());
 		int capacidades = bufferA.getCapacidad()+bufferB.getCapacidad()+bufferC.getCapacidad()+bufferD.getCapacidad();
 		if (nMessages > capacidades)
 		{
-			System.out.println("El numero de mensajes a enviar excede la suma de los tamaños de los buffers");
+			System.out.println("El numero de mensajes a enviar excede la suma de los tamaï¿½os de los buffers");
 		}
 		else
 		{

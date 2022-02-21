@@ -5,8 +5,8 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Process extends Thread {
 	private int id;
-	private int waitTime;
 	private int nMessages;
+	private int waitTime;
 	private Buffer rBuffer;
 	private Buffer lBuffer;
 	private boolean execute;
