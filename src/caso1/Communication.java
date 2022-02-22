@@ -55,9 +55,17 @@ public class Communication {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			while (n > 0) {
-				bufferD.add(new Message(), data.getP4TipoEnvio());
-				n--;
+			if(data.getP4TipoEnvio()){
+				while (n > 0) {
+					bufferD.addActive(new Message());
+					n--;
+				}
+			}
+			else{
+				while (n > 0) {
+					bufferD.addPassive(new Message());
+					n--;
+				}
 			}
 		}
 	}

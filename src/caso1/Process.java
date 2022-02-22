@@ -1,8 +1,5 @@
 package caso1;
 
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-
 public class Process extends Thread {
 	private int id;
 	private int nMessages;
@@ -41,19 +38,25 @@ public class Process extends Thread {
 	public void run() {
 		if (id == 1) {
 			int n = nMessages;
-			while (n>0) {
+			boolean acaboDePasarPrimerosMensajes = true;
+			while (n >= 0 || acaboDePasarPrimerosMensajes) {
 				Message m = get(this.tipoRecep);
 				if (m.toString().equals("Mensaje:")) {
 					transform(m);
 					send(m, this.tipoEnvio);
-				} 
-				else{
+				} else if (m.toString().contains("Mensaje: ")) {
 					System.out.println(m.toString());
+					n--;
+				} else if (m.toString().equals("Mensaje:FIN")) {
+					acaboDePasarPrimerosMensajes = false;
+				}
+
+				if (n == 0) {
+					send(new Message(true), this.tipoEnvio);
 					n--;
 				}
 			}
-			lBuffer.cleanBuffer();
-			send(new Message(true), this.tipoEnvio);
+
 		} else {
 			execute = true;
 			while (execute) {
@@ -67,24 +70,31 @@ public class Process extends Thread {
 				}
 			}
 		}
+
 		Communication.executionEnded();
 	}
 
 	public Message get(Boolean tipoRecep) {
-		Message m = lBuffer.remove(tipoRecep);
+		Message m = new Message();
+		if(tipoRecep){
+			m = lBuffer.removeActive();
+		}
+		else{
+			m = lBuffer.removePassive();
+		}
 		return m;
 	}
 
 	public void transform(Message m) {
 		m.stamp(Integer.toString(id));
-		if(tipoEnvio){
+		if (tipoEnvio) {
 			m.stamp("A");
-		}else{
+		} else {
 			m.stamp("P");
 		}
-		if(tipoRecep){
+		if (tipoRecep) {
 			m.stamp("A");
-		}else{
+		} else {
 			m.stamp("P");
 		}
 	}
@@ -92,10 +102,14 @@ public class Process extends Thread {
 	public void send(Message m, Boolean esActivo) {
 		try {
 			sleep(waitTime);
-			rBuffer.add(m, esActivo);
+			if(esActivo){
+				rBuffer.addActive(m);
+			}
+			else{
+				rBuffer.addPassive(m);
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
 	}
 }
