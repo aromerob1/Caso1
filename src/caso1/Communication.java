@@ -39,7 +39,7 @@ public class Communication {
 		Buffer bufferD = new Buffer("D", data.getDmessages());
 		int capacidades = bufferA.getCapacidad() + bufferB.getCapacidad() + bufferC.getCapacidad()
 				+ bufferD.getCapacidad();
-		if (nMessages > capacidades) {
+		if (nMessages > capacidades || nMessages == 0) {
 			System.out.println("El numero de mensajes a enviar excede la suma de los tama�os de los buffers");
 		} else {
 			try {
