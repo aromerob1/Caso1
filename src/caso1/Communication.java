@@ -39,7 +39,7 @@ public class Communication {
 		Buffer bufferD = new Buffer("D", data.getDmessages());
 		int capacidades = bufferA.getCapacidad() + bufferB.getCapacidad() + bufferC.getCapacidad()
 				+ bufferD.getCapacidad();
-		if (nMessages > capacidades) {
+		if (nMessages > capacidades || nMessages == 0) {
 			System.out.println("El numero de mensajes a enviar excede la suma de los tama�os de los buffers");
 		} else {
 			try {
@@ -55,9 +55,17 @@ public class Communication {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			while (n > 0) {
-				bufferD.add(new Message(), data.getP4TipoEnvio());
-				n--;
+			if(data.getP4TipoEnvio()){
+				while (n > 0) {
+					bufferD.addActive(new Message());
+					n--;
+				}
+			}
+			else{
+				while (n > 0) {
+					bufferD.addPassive(new Message());
+					n--;
+				}
 			}
 		}
 	}

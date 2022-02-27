@@ -2,6 +2,8 @@ package caso1;
 
 import java.util.ArrayList;
 
+import javax.sql.rowset.spi.SyncResolver;
+
 public class Buffer {
 
 	private String id;
@@ -14,27 +16,30 @@ public class Buffer {
 		buff = new ArrayList<Message>();
 	}
 
-	public synchronized void add(Message m, Boolean esActivo) {
-		if (esActivo) {
-			while (buff.size() == capacidad) {
-				// Probable yield: Preguntar
-			}
-		} else {
-			while (buff.size() == capacidad) {
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+	public void addActive(Message m) {
+		while (buff.size() == capacidad) {
+			Thread.yield();
+		}
+		buff.add(m);
+		synchronized (this) {
+			notify();
+		}
+	}
+
+	public synchronized void addPassive(Message m) {
+		while (buff.size() == capacidad) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 		buff.add(m);
 		notify();
+
 	}
 
-	// sos
-	public synchronized Message remove(Boolean esActivo) {
-
+	public synchronized Message removePassive() {
 		while (buff.size() == 0) {
 			try {
 				wait();
@@ -43,6 +48,19 @@ public class Buffer {
 			}
 		}
 		Message m = buff.remove(0);
+		notify();
+
+		return m;
+	}
+
+	public Message removeActive() {
+		while (buff.size() == 0) {
+			Thread.yield();
+		}
+		Message m = buff.remove(0);
+		synchronized (this) {
+			notify();
+		}
 		return m;
 	}
 
@@ -57,7 +75,7 @@ public class Buffer {
 		return false;
 	}
 
-	public int getCapacidad() {
+	public synchronized int getCapacidad() {
 		return this.capacidad;
 	}
 
